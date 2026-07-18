@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Реестр аналитических досье — мебельный рынок · июнь–июль 2026</title>
-<meta name="description" content="Реестр из 68 аналитических досье по группам компаний мебельного рынка России, отсортированных по выручке. Открытые данные, Checko + веб-разведка. Автор — Александр Дублин.">
+<meta name="description" content="Реестр из 73 аналитических досье по группам компаний мебельного рынка России, отсортированных по выручке. Открытые данные, Checko + веб-разведка. Автор — Александр Дублин.">
 <style>
   :root{
     --ink:#1c2530; --ink2:#38424f; --accent:#b8862f; --accent-d:#8a6420;
@@ -76,6 +76,7 @@
   .status{font-size:11.5px;font-weight:600;color:var(--muted)}
   .status.lock::before{content:"🔒 ";}
   .status.open::before{content:"🔓 ";}
+  .status.prep::before{content:"⏳ ";}
   .open-btn{font-size:13px;font-weight:700;color:var(--accent-d)}
   .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:11px}
   .tag{font-size:11px;background:var(--bg2);color:var(--ink2);border-radius:6px;padding:2px 8px}
@@ -125,11 +126,11 @@
   <div class="wrap">
     <span class="kicker">Реестр аналитических досье · открытые данные</span>
     <h1>Кто есть кто на мебельном рынке России</h1>
-    <p class="lead">68 групп компаний, разобранных по открытым данным за один цикл — конец июня — июль 2026.
+    <p class="lead">73 группы компаний, разобранных по открытым данным за один цикл — конец июня — июль 2026.
       Юридическая структура, финансы за 5 лет, суды, налоги, репутация и HR-след — по каждой.</p>
     <div class="stats">
-      <div class="stat"><b>68</b><span>групп компаний</span></div>
-      <div class="stat"><b>27.06 → 15.07</b><span>период сбора · 2026</span></div>
+      <div class="stat"><b>73</b><span>группы компаний</span></div>
+      <div class="stat"><b>27.06 → 18.07</b><span>период сбора · 2026</span></div>
       <div class="stat"><b>~300+</b><span>юрлиц и ИП в периметрах</span></div>
       <div class="stat"><b>Checko + веб</b><span>источники данных</span></div>
     </div>
@@ -623,7 +624,8 @@ function render(){
   }
   list.forEach(d=>{
     const el = document.createElement('a');
-    el.className='card'; el.href=d.url; el.target='_blank'; el.rel='noopener';
+    el.className='card';
+    if(d.url){ el.href=d.url; el.target='_blank'; el.rel='noopener'; }
     el.style.setProperty('--tc', tc[d.risk]);
     el.innerHTML = `
       <div class="top">
@@ -641,8 +643,8 @@ function render(){
       </div>
       <div class="verdict">${d.v}</div>
       <div class="foot">
-        <span class="status ${d.status}">${d.status==='open'?'Открытое досье':'Под паролем'}</span>
-        <span class="open-btn">Открыть →</span>
+        <span class="status ${d.status}">${d.status==='open'?'Открытое досье':(d.status==='prep'?'Досье готовится':'Под паролем')}</span>
+        <span class="open-btn">${d.status==='prep'?'Карточка реестра':'Открыть →'}</span>
       </div>`;
     cardsEl.appendChild(el);
   });
